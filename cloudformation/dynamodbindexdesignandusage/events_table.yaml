@@ -94,6 +94,10 @@ Resources:
       AttributeDefinitions:
         - AttributeName: "id"
           AttributeType: "S"
+        - AttributeName: "orginzerId"
+          AttributeType: "S"
+        - AttributeName: "time"
+          AttributeType: "S"
       KeySchema:
         - AttributeName: "id"
           KeyType: "HASH"
@@ -101,6 +105,16 @@ Resources:
         PointInTimeRecoveryEnabled: true
       BillingMode: PAY_PER_REQUEST
       TableName: "DynamoDBIndexes-Events"
+      GlobalSecondaryIndexes:
+        - IndexName: "OrganizerIdTimeIndex"
+          KeySchema:
+            - AttributeName: "organizerid"
+              KeyType: "Hash"
+            - AttributeName: "time"
+              KeyType: "Range"
+          Projection:
+            ProjectionType: ALL
+
   InitializeEventsTable:
     Type: Custom::InitFunction
     DependsOn: DynamoDBIndexesClassroomEvents
